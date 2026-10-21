@@ -1,0 +1,59 @@
+defaults:
+  - fjepa
+  - _self_
+
+# Flow-JEPA Push-T configuration from the paper. Keep this run separate from
+# the earlier generic-config checkpoints.
+output_model_name: flow-jepa-pusht-paper
+subdir: flow-jepa-pusht-paper
+
+seed: 3072
+expected_global_batch_size: 128
+history_size: 1
+num_preds: 5
+num_flow_steps: 8
+
+flow_matching:
+  source: noisy_current
+  source_noise_scale: 0.5
+
+# The paper initializes the visual representation from the autoregressive
+# LeWM Push-T model, then keeps the encoder and projector frozen.
+pretrained_visual_encoder:
+  enabled: true
+  checkpoint: ${oc.env:STABLEWM_HOME}/checkpoints/lewm-pusht/weights.pt
+  load_projector: true
+  strict: true
+  freeze: true
+
+model_initialization:
+  enabled: false
+  checkpoint: null
+  strict: true
+
+model:
+  freeze_encoder: true
+  freeze_projector: true
+  predictor:
+    causal_self_attention: true
+    dropout: 0.0
+
+trainer:
+  max_epochs: 20
+  devices: 1
+  accelerator: gpu
+  precision: bf16
+  gradient_clip_val: 1.0
+
+loader:
+  batch_size: 128
+
+optimizer:
+  type: AdamW
+  lr: 5e-5
+  weight_decay: 1e-3
+
+loss:
+  sigreg:
+    weight: 0.09
+

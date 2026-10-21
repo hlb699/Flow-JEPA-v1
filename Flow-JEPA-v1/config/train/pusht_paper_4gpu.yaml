@@ -1,0 +1,18 @@
+defaults:
+  - pusht_paper
+  - _self_
+
+output_model_name: flow-jepa-pusht-paper-4gpu
+subdir: flow-jepa-pusht-paper-4gpu
+
+trainer:
+  devices: 4
+  num_nodes: 1
+  strategy: ddp
+
+# DDP uses one batch per rank: 32 x 4 GPUs = paper global batch 128.
+loader:
+  batch_size: 32
+  num_workers: 4
+  prefetch_factor: 4
+

@@ -1,0 +1,23 @@
+defaults:
+  - tworoom
+  - _self_
+
+world:
+  env_name: flow-jepa/StochasticTwoRoom-v0
+  two_doors: true
+  hidden_door: true
+  forced_closed_door: null
+  position_noise_std: 0.0
+  sliding: false
+  sliding_bounds: [28.0, 28.0, 98.0, 196.0]
+  sliding_scales: [0.5, 1.5]
+
+stochastic:
+  enabled: true
+  cross_room_only: true
+  environment_seed: ${seed}
+
+output:
+  dir: logs/eval_results/tworoom_stochastic
+  filename: results.txt
+  save_video: false

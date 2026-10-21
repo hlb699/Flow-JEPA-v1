@@ -1,0 +1,56 @@
+defaults:
+  - fjepa
+  - override /data: tworoom
+  - _self_
+
+# Flow-JEPA Two-Room configuration reported in the paper.
+output_model_name: flow-jepa-tworoom-paper
+subdir: flow-jepa-tworoom-paper
+
+seed: 3072
+expected_global_batch_size: 128
+history_size: 1
+num_preds: 5
+num_flow_steps: 8
+
+flow_matching:
+  source: standard_noise
+  source_noise_scale: 1.0
+
+pretrained_visual_encoder:
+  enabled: false
+  checkpoint: null
+  load_projector: true
+  strict: true
+  freeze: false
+
+model_initialization:
+  enabled: false
+  checkpoint: null
+  strict: true
+
+model:
+  freeze_encoder: false
+  freeze_projector: false
+  predictor:
+    causal_self_attention: false
+    dropout: 0.1
+
+trainer:
+  max_epochs: 20
+  devices: 1
+  accelerator: gpu
+  precision: bf16
+  gradient_clip_val: 1.0
+
+loader:
+  batch_size: 128
+
+optimizer:
+  type: AdamW
+  lr: 5e-5
+  weight_decay: 1e-3
+
+loss:
+  sigreg:
+    weight: 0.1

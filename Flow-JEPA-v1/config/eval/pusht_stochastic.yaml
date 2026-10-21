@@ -1,0 +1,30 @@
+defaults:
+  - pusht
+  - _self_
+
+world:
+  env_name: flow-jepa/StochasticPushT-v0
+  randomize_mass: false
+  mass_scale_range: [0.5, 2.0]
+  contact_friction: false
+  randomize_friction: false
+  friction_range: [0.1, 1.0]
+  fixed_friction: 0.55
+  force_std: 0.0
+  contact_turn: false
+  angular_velocity_kick: 5.0
+
+solver:
+  n_steps: 10
+
+stochastic:
+  enabled: true
+  task: pusht
+  cross_room_only: false
+  legacy_sampling: true
+  environment_seed: ${seed}
+
+output:
+  dir: logs/eval_results/pusht_stochastic
+  filename: results.txt
+  save_video: false
